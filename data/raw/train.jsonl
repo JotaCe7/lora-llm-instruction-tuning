@@ -1,0 +1,3 @@
+{"instruction":"Classify the customer support request.","input":"I was charged twice for my subscription.","output":"billing"}
+{"instruction":"Classify the customer support request.","input":"My internet has been down since yesterday.","output":"technical"}
+{"instruction":"Classify the customer support request.","input":"I can't log into my account.","output":"account"}
