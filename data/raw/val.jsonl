@@ -1,1 +1,1 @@
-{"instruction":"Classify the customer support request.","input":"Where is my package?","output":"shipping"}git 
+{"text":"Where is my package?","label":"shipping"}
