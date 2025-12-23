@@ -1,6 +1,6 @@
 from transformers import AutoTokenizer
 
-MODEL_NAME = "google/flan-t5-small"
+from src.config import MODEL_NAME
 
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 

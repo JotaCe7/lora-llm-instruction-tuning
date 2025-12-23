@@ -2,7 +2,7 @@ import torch
 from transformers import AutoModelForSeq2SeqLM
 from peft import LoraConfig, get_peft_model, TaskType
 
-MODEL_NAME = "google/flan-t5-base"
+from src.config import MODEL_NAME
 
 def load_lora_model():
     """

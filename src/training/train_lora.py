@@ -9,8 +9,7 @@ from datasets import load_dataset
 from src.training.lora import load_lora_model
 from src.training.format_dataset import format_example
 from src.training.tokenize_dataset import tokenize_function
-
-MODEL_NAME = "google/flan-t5-small"
+from src.config import MODEL_NAME
 
 def main():
     model = load_lora_model()

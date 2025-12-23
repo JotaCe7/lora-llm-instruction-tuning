@@ -1,6 +1,6 @@
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
-MODEL_NAME = "google/flan-t5-base"
+from src.config import MODEL_NAME
 
 model = AutoModelForSeq2SeqLM.from_pretrained(MODEL_NAME)
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)

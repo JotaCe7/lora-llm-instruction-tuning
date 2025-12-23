@@ -1,7 +1,7 @@
 import torch
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, PreTrainedModel, PreTrainedTokenizer
 
-MODEL_NAME = "google/flan-t5-small"
+from src.config import MODEL_NAME
 
 def load_base_model() -> tuple[PreTrainedModel, PreTrainedTokenizer]:
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
