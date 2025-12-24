@@ -1,3 +1,4 @@
+import torch
 from transformers import (
     AutoTokenizer,
     Trainer,
@@ -45,7 +46,7 @@ def main():
         gradient_accumulation_steps=2,
         learning_rate=2e-4,
         num_train_epochs=10,
-        fp16=True,
+        fp16=torch.cuda.is_available(),  # only enable if GPU exists
         logging_steps=10,
         eval_strategy="epoch",
         save_strategy="epoch",
