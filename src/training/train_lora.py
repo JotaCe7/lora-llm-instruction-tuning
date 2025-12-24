@@ -39,7 +39,7 @@ def main():
     )
 
     trainin_args = TrainingArguments(
-        output_dir="outputs2/lora",
+        output_dir="outputs/lora",
         per_device_train_batch_size=4,
         per_device_eval_batch_size=4,
         gradient_accumulation_steps=2,
@@ -65,8 +65,8 @@ def main():
 
     trainer.train()
 
-    model.save_pretrained("outputs2/lora/final")
-    tokenizer.save_pretrained("outputs2/lora/final")
+    model.save_pretrained("outputs/lora/final")
+    tokenizer.save_pretrained("outputs/lora/final")
 
 if __name__ == "__main__":
     main()
