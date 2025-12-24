@@ -11,7 +11,7 @@ def load_lora_model():
     """
     model = AutoModelForSeq2SeqLM.from_pretrained(
         MODEL_NAME,
-        torch_dtype="auto"
+        dtype="auto"
     )
 
     lora_config = LoraConfig(
