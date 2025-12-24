@@ -1,5 +1,6 @@
 from typing import cast
-from datasets import load_dataset, Dataset, DatasetDict
+from datasets import load_dataset, DatasetDict
+
 from src.training.format_dataset import format_example
 
 def main():
