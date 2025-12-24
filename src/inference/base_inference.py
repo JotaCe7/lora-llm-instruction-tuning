@@ -8,7 +8,7 @@ def load_base_model() -> tuple[PreTrainedModel, PreTrainedTokenizer]:
 
     model = AutoModelForSeq2SeqLM.from_pretrained(
         MODEL_NAME,
-        dtype=torch.float32 if torch.cuda.is_available() else torch.float16,
+        dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
         device_map="auto",
     )
 
