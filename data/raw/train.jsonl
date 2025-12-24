@@ -1,3 +1,28 @@
 {"text":"I was charged twice for my subscription.","label":"billing"}
+{"text":"My credit card was billed incorrectly.","label":"billing"}
+{"text":"I see an extra charge on my invoice.","label":"billing"}
+{"text":"I was billed after canceling my plan.","label":"billing"}
+{"text":"Why was my payment declined?","label":"billing"}
+
 {"text":"My internet has been down since yesterday.","label":"technical"}
-{"text":"I can't log into my account.","label":"account"}
+{"text":"The app crashes every time I open it.","label":"technical"}
+{"text":"I am getting a server error when I log in.","label":"technical"}
+{"text":"The website loads very slowly.","label":"technical"}
+{"text":"My WiFi connection stopped working.","label":"technical"}
+
+{"text":"I can’t log into my account.","label":"account"}
+{"text":"I forgot my password.","label":"account"}
+{"text":"My account was locked after too many attempts.","label":"account"}
+{"text":"I need to change my email address.","label":"account"}
+{"text":"I want to update my profile information.","label":"account"}
+
+{"text":"My package hasn’t arrived yet.","label":"shipping"}
+{"text":"The delivery is delayed.","label":"shipping"}
+{"text":"I received the wrong item.","label":"shipping"}
+{"text":"My order is still in transit.","label":"shipping"}
+{"text":"Tracking shows delivered but I didn’t receive it.","label":"shipping"}
+
+{"text":"I have a question about your product.","label":"other"}
+{"text":"Can you tell me more about your services?","label":"other"}
+{"text":"I want to give feedback.","label":"other"}
+{"text":"Do you offer discounts?","label":"other"}
