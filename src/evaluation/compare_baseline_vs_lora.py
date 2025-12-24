@@ -49,7 +49,7 @@ def main():
     for text in TEST_PROMPTS:
         out = predict(base_model, base_tokenizer, text)
         print(f"Input: {text}")
-        print(f"Output: {text}\n")
+        print(f"Output: {out}\n")
     
     print("\n=== LORA MODEL (Fine-tuned)===\n")
     for text in TEST_PROMPTS:
