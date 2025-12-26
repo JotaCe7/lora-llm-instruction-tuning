@@ -1,11 +1,17 @@
-from transformers import AutoTokenizer
+from transformers import BatchEncoding, PreTrainedTokenizer
 
-from src.config import MODEL_NAME
+def tokenize_function(example: dict, tokenizer: PreTrainedTokenizer) -> BatchEncoding:
+    """
+    Tokenizes input and target text for seq2seq training.
 
-tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+    Args:
+        example: dict with keys "input_text" and "target_text"
+        tokenizer: a HuggingFace tokenizer instance
 
-def tokenize_function(example, tokenizer):
-    # Tokenize inpput (prompt)
+    Returns:
+        tokenized model inputs including labels
+    """
+    # Tokenize input (prompt)
     model_inputs = tokenizer(
         example["input_text"],
         truncation=True,
