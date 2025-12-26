@@ -1,29 +1,25 @@
+from peft import get_peft_model
 import torch
-from transformers import AutoModelForSeq2SeqLM
-from peft import LoraConfig, get_peft_model, TaskType
+from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
-from src.config import MODEL_NAME
+from src.config import LORA_CONFIG, MODEL_NAME
 
 def load_lora_model():
     """
     Loads the base model and applies LORA adapters.
-    Returns a PEFT-wrapped model ready for training.
+    Returns a PEFT-wrapped model ready for training and tokenizer.
     """
+    tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
     model = AutoModelForSeq2SeqLM.from_pretrained(
         MODEL_NAME,
-        dtype="auto"
+        dtype=torch.float16 if torch.cuda.is_available() else torch.float32
     )
 
-    lora_config = LoraConfig(
-        task_type=TaskType.SEQ_2_SEQ_LM,
-        r=8,
-        lora_alpha=16,
-        lora_dropout=0.1,
-        target_modules=["q","v"],
-    )
-
-    model = get_peft_model(model, lora_config)
+    model = get_peft_model(model, LORA_CONFIG)
+    
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model.to(device)
 
     model.print_trainable_parameters()
 
-    return model
+    return model, tokenizer
