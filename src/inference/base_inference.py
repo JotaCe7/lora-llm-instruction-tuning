@@ -1,45 +1,26 @@
-from typing import cast
-
 import torch
-from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, PreTrainedModel, PreTrainedTokenizer
 
-from src.config import GENERATION_CONFIG, MODEL_NAME
+from src.config import GENERATION_CONFIG
+from src.inference.model_loading import load_base_model
 from src.training.format_dataset import format_prompt
 
 
-_model: PreTrainedModel | None = None
-_tokenizer: PreTrainedTokenizer | None = None
-
-
-def load_base_model() -> tuple[PreTrainedModel, PreTrainedTokenizer]:
-    global _model, _tokenizer
-
-    if _model is None or _tokenizer is None:
-        _tokenizer = cast(PreTrainedTokenizer, AutoTokenizer.from_pretrained(MODEL_NAME))
-        _model = cast(PreTrainedModel, AutoModelForSeq2SeqLM.from_pretrained(
-            MODEL_NAME,
-            dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-        ))
-        _model.eval()
-
-    return _model, _tokenizer
-
-
 @torch.no_grad()
-def predict(text: str) -> str:
+def predict(
+    text: str,
+    *,
+    generation_kargs:dict | None = None) -> str:
     model, tokenizer = load_base_model()
 
     formatted_prompt = format_prompt({"text": text, "label": ""})["input_text"]
     
-    inputs = tokenizer(
-        formatted_prompt,
-        return_tensors="pt",
-    ).to(model.device)
+    inputs = tokenizer(formatted_prompt, return_tensors="pt").to(model.device)
 
-    outputs = model.generate(
-        **inputs,
-        **GENERATION_CONFIG,
-    )
+    gen_cfg = GENERATION_CONFIG.copy()
+    if generation_kargs:
+        gen_cfg.update(generation_kargs)
+
+    outputs = model.generate(**inputs, **gen_cfg)
 
     return tokenizer.decode(
         outputs[0],
