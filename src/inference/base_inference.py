@@ -3,7 +3,7 @@ from typing import cast
 import torch
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, PreTrainedModel, PreTrainedTokenizer
 
-from src.config import MODEL_NAME
+from src.config import GENERATION_CONFIG, MODEL_NAME
 from src.training.format_dataset import format_prompt
 
 
@@ -26,7 +26,7 @@ def load_base_model() -> tuple[PreTrainedModel, PreTrainedTokenizer]:
 
 
 @torch.no_grad()
-def predict(text: str, max_new_tokens: int = 8) -> str:
+def predict(text: str) -> str:
     model, tokenizer = load_base_model()
 
     formatted_prompt = format_prompt({"text": text, "label": ""})["input_text"]
@@ -38,7 +38,7 @@ def predict(text: str, max_new_tokens: int = 8) -> str:
 
     outputs = model.generate(
         **inputs,
-        max_new_tokens=max_new_tokens,
+        **GENERATION_CONFIG,
     )
 
     return tokenizer.decode(
