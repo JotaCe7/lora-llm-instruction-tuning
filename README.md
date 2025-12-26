@@ -135,7 +135,7 @@ This formatting is applied consistently during:
 
 - `predict.py` applies instruction-style formatting automatically.
 - `base_inference.predict()` expects a pre-formatted prompt. 
-  Use `format_example()` from `src/training/format_dataset.py` 
+  Use `format_prompt()` from `src/training/format_dataset.py` 
   to convert raw text into the canonical instruction prompt before passing it to `base_inference.predict()`.
 
 

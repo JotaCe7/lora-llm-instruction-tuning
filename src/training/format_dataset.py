@@ -1,6 +1,6 @@
 from .prompt import SYSTEM_PROMPT
 
-def format_example(example):
+def format_prompt(example):
     prompt = f"""{SYSTEM_PROMPT}
 
 Customer message:

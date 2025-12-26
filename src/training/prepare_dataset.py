@@ -1,6 +1,6 @@
 from datasets import load_dataset
 
-from src.training.format_dataset import format_example
+from src.training.format_dataset import format_prompt
 from src.training.tokenize_dataset import tokenize_function
 
 def main():
@@ -12,7 +12,7 @@ def main():
         },
     )
 
-    dataset = dataset.map(format_example)
+    dataset = dataset.map(format_prompt)
     print(dataset)
     dataset = dataset.map(
         tokenize_function,

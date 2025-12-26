@@ -4,7 +4,7 @@ import torch
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, PreTrainedModel, PreTrainedTokenizer
 
 from src.config import MODEL_NAME
-from src.training.format_dataset import format_example
+from src.training.format_dataset import format_prompt
 
 
 _model: PreTrainedModel | None = None
@@ -29,7 +29,7 @@ def load_base_model() -> tuple[PreTrainedModel, PreTrainedTokenizer]:
 def predict(text: str, max_new_tokens: int = 8) -> str:
     model, tokenizer = load_base_model()
 
-    formatted_prompt = format_example({"text": text, "label": ""})["input_text"]
+    formatted_prompt = format_prompt({"text": text, "label": ""})["input_text"]
     
     inputs = tokenizer(
         formatted_prompt,

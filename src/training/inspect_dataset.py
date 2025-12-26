@@ -1,7 +1,7 @@
 from typing import cast
 from datasets import load_dataset, DatasetDict
 
-from src.training.format_dataset import format_example
+from src.training.format_dataset import format_prompt
 
 def main():
     dataset = cast(DatasetDict, load_dataset(
@@ -12,7 +12,7 @@ def main():
         }
     ))
 
-    dataset = dataset.map(format_example)
+    dataset = dataset.map(format_prompt)
 
     # Inspect a few formatted examples
     train_ds = dataset["train"]

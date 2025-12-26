@@ -2,7 +2,7 @@ import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from peft import PeftModel
 
-from src.training.format_dataset import format_example
+from src.training.format_dataset import format_prompt
 from src.config import MODEL_NAME
 
 TEST_PROMPTS = [
@@ -30,7 +30,7 @@ def load_lora_model(adapter_path="outputs/lora/final"):
     return model, tokenizer
 
 def predict(model, tokenizer, text, max_new_tokens=8):
-    formatted_prompt = format_example({"text": text, "label": ""})
+    formatted_prompt = format_prompt({"text": text, "label": ""})
     inputs = tokenizer(formatted_prompt["input_text"], return_tensors="pt").to(model.device)
 
     with torch.no_grad():

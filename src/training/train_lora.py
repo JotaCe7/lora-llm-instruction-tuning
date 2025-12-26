@@ -8,7 +8,7 @@ from transformers import (
 from datasets import load_dataset
 
 from src.training.lora import load_lora_model
-from src.training.format_dataset import format_example
+from src.training.format_dataset import format_prompt
 from src.training.tokenize_dataset import tokenize_function
 from src.config import MODEL_NAME
 
@@ -25,7 +25,7 @@ def main():
     )
 
     formatted = dataset.map(
-        format_example,
+        format_prompt,
         remove_columns=dataset["train"].column_names,
     )
     
