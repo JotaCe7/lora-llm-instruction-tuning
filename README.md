@@ -63,7 +63,8 @@ lora-llm-instruction-tuning/
 │
 │   └── inference/
 │       ├── base_inference.py
-│       └── predict.py
+│       ├── lora_inference.py
+│       └── utils.py
 │
 │   └── evaluation/
 │       └── compare_baseline_vs_lora.py
@@ -133,11 +134,34 @@ This formatting is applied consistently during:
 
 ⚠️ Note on Inference Functions
 
-- `predict.py` applies instruction-style formatting automatically.
-- `base_inference.predict()` expects a pre-formatted prompt. 
-  Use `format_prompt()` from `src/training/format_dataset.py` 
-  to convert raw text into the canonical instruction prompt before passing it to `base_inference.predict()`.
+- `src/inference/utils.py` provides:
+    - `load_base_model()`: returns the base FLAN-T5 model and tokenizer.
+    - `load_lora_model()`: returns the LoRA adapted model and tokenizer.
+    - `predict(text, model, tokenizer, generation_kwargs=None)`: generates predictions using a model and tokenizer.
 
+- `predict()` automatically formats the text using `format_prompt()` before inference.
+  See `src/inference/utils.py` for helpers that handle formatting and model loading.
+- You can still manually format text using format_prompt() if needed.
+Example:
+```python
+from src.inference.utils import load_lora_model, predict
+
+model, tokenizer = load_lora_model("outputs/lora/final")
+
+# Basic usage
+output = predict("I was charged twice for my subscription.", model, tokenizer)
+print(output)
+
+# Override generation settings (e.g., max_new_tokens)
+output_with_override = predict(
+    "I was charged twice for my subscription.",
+    model,
+    tokenizer,
+    generation_kwargs={"max_new_tokens": 12}
+)
+print(output_with_override)
+
+```
 
 ---
 
@@ -208,6 +232,9 @@ Select-String -Path requirements.txt -Pattern '^torch' -NotMatch | Set-Content r
 pip install -r requirements-no-torch.txt
 pip install torch --index-url https://download.pytorch.org/whl/cpu
 ```
+
+⚠️ Note: requirements.txt pins a CUDA-enabled PyTorch wheel (torch==2.5.1+cu121). 
+On CPU-only machines, follow the instructions below or remove the torch line before installing.
 
 
 ---
