@@ -4,8 +4,15 @@ from typing import Optional
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
+from transformers import PreTrainedModel, PreTrainedTokenizer
 
 from src.inference.utils import load_base_model, load_lora_model, predict
+
+base_model: Optional[PreTrainedModel] = None
+base_tokenizer: Optional[PreTrainedTokenizer] = None
+lora_model: Optional[PreTrainedModel] = None
+lora_tokenizer: Optional[PreTrainedTokenizer] = None
+
 
 app = FastAPI(
     title="LoRA LLM Instruction tuning API",
@@ -27,14 +34,18 @@ logging.basicConfig(
     )
 logger = logging.getLogger(__name__)
 
-# Load models once at startup
-logger.info("Loading base model...")
-base_model, base_tokenizer = load_base_model()
 
-logger.info("Loading LoRA model...")
-lora_model, lora_tokenizer = load_lora_model(adapter_path="outputs/lora/final")
+@app.on_event("startup")
+def startup_event():
+    global base_model, base_tokenizer, lora_model, lora_tokenizer
 
-logger.info("Models loaded successfully")
+    # Load models once at startup
+    logger.info("Loading base model...")
+    base_model, base_tokenizer = load_base_model()
+    logger.info("Loading LoRA model...")
+    lora_model, lora_tokenizer = load_lora_model(adapter_path="outputs/lora/final")
+    logger.info("Models loaded successfully")
+
 
 class PredictionRequest(BaseModel):
     text: str = Field(..., example="I was billed twice this month.")
@@ -42,6 +53,7 @@ class PredictionRequest(BaseModel):
         None,
         description="Optional override for the maximum number of tokens to generate",
     )
+    
 
 class PredictionResponse(BaseModel):
     prediction: str = Field(..., example="billing")
