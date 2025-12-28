@@ -1,6 +1,8 @@
-from typing import Optional, Literal
+import logging
+from typing import Optional
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 from src.inference.utils import load_base_model, load_lora_model, predict
@@ -11,9 +13,28 @@ app = FastAPI(
     version="1.0.0",
     )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
+    )
+logger = logging.getLogger(__name__)
+
 # Load models once at startup
+logger.info("Loading base model...")
 base_model, base_tokenizer = load_base_model()
+
+logger.info("Loading LoRA model...")
 lora_model, lora_tokenizer = load_lora_model(adapter_path="outputs/lora/final")
+
+logger.info("Models loaded successfully")
 
 class PredictionRequest(BaseModel):
     text: str = Field(..., example="I was billed twice this month.")
@@ -31,6 +52,7 @@ def predict_base(request: PredictionRequest):
     """
     Generate a prediction using the base FLAN-T5 model.
     """
+    logger.info("Base prediction request received")
     generation_kwargs = {}
     if request.max_new_tokens is not None:
         generation_kwargs["max_new_tokens"] = request.max_new_tokens
@@ -43,6 +65,7 @@ def predict_lora(request: PredictionRequest):
     """
     Generate a prediction using the LoRA-adapted model.
     """
+    logger.info("LoRA prediction request received")
     generation_kwargs = {}
     if request.max_new_tokens:
         generation_kwargs["max_new_tokens"] = request.max_new_tokens
@@ -56,3 +79,4 @@ def health_check():
     Simple health check endpoint to verify that the API is running.
     """
     return {"status": "ok"}
+
